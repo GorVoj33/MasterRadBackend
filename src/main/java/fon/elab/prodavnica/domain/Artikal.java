@@ -45,12 +45,14 @@ public class Artikal  {
 	@JoinColumn(name = "slika_id")
 	Slika slika;
 	int zaliha;
-	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"}) 
+	
 	@ManyToOne(fetch = FetchType.LAZY)
+	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"}) 
 	@JoinColumn(name="prodavac_id")
 	Prodavac prodavac;
 	
 	@JsonIgnore
+//	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"}) 
 	@OneToMany(mappedBy = "artikal", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	List<Komentar> komentari;
 	public Artikal() {
@@ -191,6 +193,37 @@ public class Artikal  {
 				+ zaPromovisanje + ", kategorija=" + kategorija + ", slanjeKuriromMoguce=" + slanjeKuriromMoguce
 				+ ", slika=" + slika + ", zaliha=" + zaliha + ", prodavac=" + prodavac + ", komentari=" + komentari
 				+ "]";
+	}
+
+
+
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		return result;
+	}
+
+
+
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Artikal other = (Artikal) obj;
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
+			return false;
+		return true;
 	}
 	
 }

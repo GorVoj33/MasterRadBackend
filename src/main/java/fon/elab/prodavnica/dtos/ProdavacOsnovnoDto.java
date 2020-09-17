@@ -7,6 +7,7 @@ public class ProdavacOsnovnoDto {
 	String gazdinstvo;
 	boolean direktnaIsporuka;
 	boolean kurirskaIsporuka;
+	String email;
 	public ProdavacOsnovnoDto() {
 		// TODO Auto-generated constructor stub
 	}
@@ -68,6 +69,14 @@ public class ProdavacOsnovnoDto {
 		this.gazdinstvo = gazdinstvo;
 		this.direktnaIsporuka = direktnaIsporuka;
 		this.kurirskaIsporuka = kurirskaIsporuka;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
 	}
 
 	

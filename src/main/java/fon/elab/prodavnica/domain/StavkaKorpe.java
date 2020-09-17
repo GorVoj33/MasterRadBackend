@@ -8,6 +8,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 @Entity
 public class StavkaKorpe {
 	@Id
@@ -15,10 +16,12 @@ public class StavkaKorpe {
 	Integer id;
 	int kolicina;
 	@ManyToOne
+	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"}) 
     @JoinColumn(name = "artikal_id") 
 	Artikal artikal;
 	double cenaStavke;
 	@ManyToOne
+	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"}) 
 	@JsonIgnore
     @JoinColumn(name = "korpa_id") 
     private Korpa korpa;

@@ -2,6 +2,7 @@ package fon.elab.prodavnica.rep;
 
 import java.util.List;
 
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -19,11 +20,13 @@ public interface ArtikalRepository extends JpaRepository<Artikal, Integer>{
 //	public List<Artikal> vratiArtikleIDKategorije(@Param("zadati_id") Integer id);
 	
 	
-	@Query("SELECT new fon.elab.prodavnica.dtos.ArtikalOsnovnoDto(a.id,a.naziv,a.cena,a.slika,a.kategorija,a.slanjeKuriromMoguce) FROM Artikal a WHERE a.prodavac.id = ?1")
+	@Query("SELECT new fon.elab.prodavnica.dtos.ArtikalOsnovnoDto(a.id,a.naziv,a.cena,a.slika,a.kategorija,a.slanjeKuriromMoguce,a.kolicina) FROM Artikal a WHERE a.prodavac.id = ?1")
 	public List<ArtikalOsnovnoDto> vratiOsnovneInformacijePremaProdavacID(Integer id);
-	
+	@Query("SELECT new fon.elab.prodavnica.dtos.ArtikalOsnovnoDto(a.id,a.naziv,a.cena,a.slika,a.kategorija,a.slanjeKuriromMoguce,a.kolicina) FROM Artikal a WHERE a.kategorija.id = ?1")
+	public List<ArtikalOsnovnoDto> vratiOsnovneOArtikluPremaKategoriji(Integer id, Pageable pageable);
 	@Query(value = "SELECT count(a.id) FROM Artikal a WHERE a.aktivan=?1")
     Integer vratiBrojAktivnihINeaktivnih(boolean aktivan);
+	
 	
 	List<Artikal> findByProdavac(Prodavac prodavac);
 	

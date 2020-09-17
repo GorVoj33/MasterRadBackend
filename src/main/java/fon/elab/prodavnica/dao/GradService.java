@@ -7,5 +7,5 @@ public interface GradService {
 	List<Grad> vratiSve();
 	Grad vratiPoId(Integer id);
 	void sacuvaj (Grad grad);
-	
+	void updateBrojKorisnika(Integer noviBrojKorisnika, Integer gradId);
 }

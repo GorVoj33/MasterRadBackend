@@ -9,6 +9,7 @@ import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -25,6 +26,8 @@ public class Prodavac extends Korisnik {
 	double minimalnaCenaNarudzbine;
 	boolean direktnaIsporukaMoguca;
 	boolean kurirskaIsporukaMoguca;
+	
+	
 	@JsonIgnore
 	@OneToMany(mappedBy = "prodavac", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	List<Artikal> artikli = new ArrayList<>();

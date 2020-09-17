@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import fon.elab.prodavnica.dao.KorisnikService;
+import fon.elab.prodavnica.domain.Grad;
 import fon.elab.prodavnica.domain.Korisnik;
 import fon.elab.prodavnica.domain.Korpa;
 import fon.elab.prodavnica.domain.Kupac;
@@ -40,9 +41,9 @@ public class KorisnikServiceImpl implements KorisnikService{
 	}
 
 	@Override
-	public void sacuvaj(Korisnik k) {
-		korisnikRepository.save(k);
-		
+	public Korisnik sacuvaj(Korisnik k) {
+		Korisnik korisnik = korisnikRepository.save(k);
+		return korisnik;
 	}
 
 	@Override
@@ -94,6 +95,19 @@ public class KorisnikServiceImpl implements KorisnikService{
 	@Override
 	public List<Prodavac> vratiSveOdbijeneProdavce() {
 		return prodavacRepository.findByOdobren(false);
+	}
+
+	@Override
+	public Korisnik vratiProdavcaPoEmail(String email) {
+		Optional<Korisnik> optKorisnik = korisnikRepository.findByEmail(email);
+		if(optKorisnik.isPresent()) 
+			return optKorisnik.get();
+		return null;
+	}
+
+	@Override
+	public int vratiBrojProdavacaZaGrad(int gradId) {
+		return korisnikRepository.vratiBrojProdavacaZaGrad(gradId);
 	}
 
 }

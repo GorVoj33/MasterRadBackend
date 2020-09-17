@@ -1,5 +1,6 @@
 package fon.elab.prodavnica.dtos;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -33,7 +34,10 @@ public class ArtikalDetaljiDto {
 	int zaliha;
 	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"}) 
 	ProdavacOsnovnoDto prodavac;
+	boolean aktivan;
 	int brojKomentara;
+	boolean istaknut;
+	List<ArtikalOsnovnoDto> slicniArtikli = new ArrayList<>();
 	public ArtikalDetaljiDto() {
 		// TODO Auto-generated constructor stub
 	}
@@ -112,6 +116,30 @@ public class ArtikalDetaljiDto {
 	}
 	public void setBrojKomentara(int brojKomentara) {
 		this.brojKomentara = brojKomentara;
+	}
+
+	public boolean isAktivan() {
+		return aktivan;
+	}
+
+	public void setAktivan(boolean aktivan) {
+		this.aktivan = aktivan;
+	}
+
+	public boolean isIstaknut() {
+		return istaknut;
+	}
+
+	public void setIstaknut(boolean istaknut) {
+		this.istaknut = istaknut;
+	}
+
+	public List<ArtikalOsnovnoDto> getSlicniArtikli() {
+		return slicniArtikli;
+	}
+
+	public void setSlicniArtikli(List<ArtikalOsnovnoDto> slicniArtikli) {
+		this.slicniArtikli = slicniArtikli;
 	}
 	
 }

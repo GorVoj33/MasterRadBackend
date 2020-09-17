@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import fon.elab.prodavnica.dao.ArtikalService;
@@ -26,12 +27,13 @@ import fon.elab.prodavnica.dtos.ArtikalStavka;
 import fon.elab.prodavnica.dtos.KorpaDto;
 import fon.elab.prodavnica.dtos.NovaStavkaKorpeDto;
 import fon.elab.prodavnica.dtos.ProdavacOsnovnoDto;
+import fon.elab.prodavnica.dtos.PromenaKolicineKorpeDto;
 import fon.elab.prodavnica.dtos.ServerResponse;
 import fon.elab.prodavnica.dtos.StavkaKorpeDto;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:4200")
-@RequestMapping("/korpa")
+@RequestMapping("/rest/korpa")
 public class KorpaController {
 	@Autowired
 	KorpaService korpaService;
@@ -53,7 +55,7 @@ public class KorpaController {
 		ServerResponse sr = new ServerResponse();
 		sr.setStatus("OK");
 		sr.setPoruka("Uspesno ste ucitali korpu.");
-		KorpaDto kd = new KorpaDto();
+		
 		
 		try {
 			Korpa korpa = korpaService.vratiPoID(korpaId);
@@ -76,6 +78,7 @@ public class KorpaController {
 		KorpaDto kd = new KorpaDto();
 		ArrayList<StavkaKorpeDto> lista = new ArrayList<>();
 		try {
+			System.out.println("Pretraga korpe po ID: "+korpaId);
 			Korpa korpa = korpaService.vratiPoID(korpaId);
 			System.out.println(korpa);
 			Collections.sort(korpa.getStavke(), new Comparator<StavkaKorpe>(){
@@ -174,7 +177,8 @@ public class KorpaController {
 			k.setUkupnaVrednost(k.getUkupnaVrednost() + sk.getCenaStavke());
 			k.setBrojStavki(k.getBrojStavki() + 1);
 			k.getStavke().add(sk);
-			System.out.println("Korpa: "+k);
+			sk.setKorpa(k);
+			//System.out.println("Korpa: "+k);
 			korpaService.sacuvaj(k);
 			response.setStatus("OK");
 			response.setPoruka("Artikal uspesno dodat u korpu.");
@@ -186,7 +190,41 @@ public class KorpaController {
 			e.printStackTrace();
 		}
 
-		return null;
+		return response;
+	}
+	
+	@RequestMapping(path="/promeniKolicinu", method = RequestMethod.POST)
+	public ServerResponse promeniKolicinu (@RequestBody PromenaKolicineKorpeDto objekatKolicina) {
+		ServerResponse sr = new ServerResponse();
+		try {
+			StavkaKorpe sk = stavkaKorpeService.vratiPoId(objekatKolicina.getStavkaId());
+			Artikal a = artikalService.vratiPoId(objekatKolicina.getArtikalId());
+			Korpa korpa = korpaService.vratiPoID(sk.getKorpa().getId());
+			if(a.getZaliha() >= objekatKolicina.getNovaKolicina()) {
+				double staraVrednost = objekatKolicina.getStaraKolicina()*a.getCena();
+				double novaVrednost = objekatKolicina.getNovaKolicina() * a.getCena();
+				korpa.setUkupnaVrednost(korpa.getUkupnaVrednost()-staraVrednost);
+				korpa.setUkupnaVrednost(korpa.getUkupnaVrednost() + novaVrednost);
+				sk.setCenaStavke(novaVrednost);
+				sk.setKolicina(objekatKolicina.getNovaKolicina());
+				stavkaKorpeService.sacuvaj(sk);
+				korpaService.sacuvaj(korpa);
+				sr.setPoruka("Uspesno sacuvana nova kolicina!");
+				sr.setStatus("USPESNO");
+				KorpaDto korpaDto = vratiKorpaDto(korpa);
+				sr.setObject(korpaDto);
+			}else {
+				sr.setPoruka("Nije moguce dodati novu kolicinu!");
+				sr.setStatus("GRESKA");
+			}
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			sr.setPoruka("GRESKA PRILIKOM IZVRSENJA");
+			sr.setStatus("GRESKA");
+		}
+		
+		return sr;
 	}
 	
 	@RequestMapping("/id/{korpaId}/izbaci/{stavkaId}")

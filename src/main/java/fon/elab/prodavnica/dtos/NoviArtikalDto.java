@@ -3,6 +3,7 @@ package fon.elab.prodavnica.dtos;
 import java.io.File;
 
 import fon.elab.prodavnica.domain.Kategorija;
+import fon.elab.prodavnica.domain.Prodavac;
 
 public class NoviArtikalDto {
 	Integer id;
@@ -14,6 +15,7 @@ public class NoviArtikalDto {
 	String kolicina;
 	Kategorija kategorija;
 	boolean mozeKurirom;
+	Prodavac prodavac;
 	int zaliha;
 	
 	public NoviArtikalDto() {
@@ -100,5 +102,10 @@ public class NoviArtikalDto {
 		this.kolicina = kolicina;
 	}
 	
-	
+	public Prodavac getProdavac() {
+		return prodavac;
+	}
+	public void setProdavac(Prodavac prodavac) {
+		this.prodavac = prodavac;
+	}
 }

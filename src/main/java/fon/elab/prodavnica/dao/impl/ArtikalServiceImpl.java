@@ -1,5 +1,11 @@
 package fon.elab.prodavnica.dao.impl;
 
+import org.springframework.boot.autoconfigure.data.*;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
+import org.springframework.data.domain.Sort;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -9,13 +15,18 @@ import org.springframework.stereotype.Component;
 
 import fon.elab.prodavnica.dao.ArtikalService;
 import fon.elab.prodavnica.domain.Artikal;
+import fon.elab.prodavnica.domain.Komentar;
 import fon.elab.prodavnica.domain.Prodavac;
 import fon.elab.prodavnica.dtos.ArtikalOsnovnoDto;
 import fon.elab.prodavnica.rep.ArtikalRepository;
+import fon.elab.prodavnica.rep.KomentarRepository;
 @Component
 public class ArtikalServiceImpl implements ArtikalService{
 	@Autowired
 	ArtikalRepository artikalRepository;
+	@Autowired
+	KomentarRepository komRepo;
+	
 	@Override
 	public List<Artikal> vratiSve() {
 		return artikalRepository.findAll();
@@ -68,6 +79,20 @@ public class ArtikalServiceImpl implements ArtikalService{
 	@Override
 	public Integer vratiBrojNeAktivnih() {
 		return artikalRepository.vratiBrojAktivnihINeaktivnih(false);
+	}
+
+	@Override
+	public Komentar sacuvajKomentar(Komentar kom) {
+		kom = komRepo.save(kom);
+		return kom;
+	}
+
+	@Override
+	public List<ArtikalOsnovnoDto> vratiArtiklePremaKategoriji(Integer id) {
+		
+
+		
+		return artikalRepository.vratiOsnovneOArtikluPremaKategoriji(id, PageRequest.of(0,5));
 	}
 
 

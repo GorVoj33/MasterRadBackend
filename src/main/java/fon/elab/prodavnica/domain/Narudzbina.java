@@ -31,6 +31,7 @@ public class Narudzbina {
 	String nacinIsporuke;
 	boolean odobrena;
 	Date datumOdobrenja;
+	
 	Date datumOdbijanja;
 	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"}) 
 	@ManyToOne(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
@@ -43,6 +44,7 @@ public class Narudzbina {
 	@OneToMany(mappedBy = "narudzbina", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
 	List<StavkaNarudzbine> stavke = new ArrayList<>();
 	public Narudzbina() {
+		
 		// TODO Auto-generated constructor stub
 	}
 	public Integer getId() {
@@ -126,6 +128,7 @@ public class Narudzbina {
 	public void setDatumOdbijanja(Date datumOdbijanja) {
 		this.datumOdbijanja = datumOdbijanja;
 	}
+	
 	@Override
 	public String toString() {
 		return "Narudzbina [id=" + id + ", datumKreiranja=" + datumKreiranja + ", ukupnaVrednost=" + ukupnaVrednost

@@ -6,6 +6,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.MapsId;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
@@ -23,9 +24,13 @@ public class Korisnik {
 	String lozinka;
 	String ime;
 	String prezime;
+	
+	@OneToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "slika_id")
+	Slika slika;
 
 	boolean odobren;
-	@OneToOne(mappedBy="korisnik", cascade = CascadeType.ALL, orphanRemoval = true,
+	@OneToOne(mappedBy="korisnik", cascade = CascadeType.DETACH, orphanRemoval = true,
 	        fetch = FetchType.LAZY)
 	@JsonIgnore
 	Korpa korpa;
@@ -106,6 +111,14 @@ public class Korisnik {
         }
         
 		this.korpa = korpa;
+	}
+	
+	public Slika getSlika() {
+		return slika;
+	}
+
+	public void setSlika(Slika slika) {
+		this.slika = slika;
 	}
 
 	@Override

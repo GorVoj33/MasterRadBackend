@@ -36,6 +36,7 @@ import util.Utility;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:4200")
+@RequestMapping(path = "/rest/kategorija")
 public class KategorijaController {
 
 	@Autowired
@@ -47,13 +48,13 @@ public class KategorijaController {
 	@Autowired
 	SlikaRepository slikaRepository;
 	
-	@RequestMapping(path="/kategorija/vratiSve", method = RequestMethod.GET)
+	@RequestMapping(path="/vratiSve", method = RequestMethod.GET)
 	public List<Kategorija> vratiSve (){
 		
 		return kategorijaService.vratiSve();
 	}
-	@RequestMapping(path="/kategorija/{kategorijaId}", method = RequestMethod.GET)
-	public Kategorija vratiPodatkeOKategoriji (@PathVariable Integer kategorijaId){
+	@RequestMapping(path="/{kategorijaId}", method = RequestMethod.GET)
+	public Kategorija vratiKategorijuPoId (@PathVariable Integer kategorijaId){
 		
 		//List<KategorijaSaArtiklimaDto> lista = kategorijaService.vratiSve();
 		try {
@@ -73,7 +74,7 @@ public class KategorijaController {
 		
 		return null;
 	}
-	@RequestMapping(path="/kategorija/{kategorijaId}/artikli", method = RequestMethod.GET)
+	@RequestMapping(path="/{kategorijaId}/artikli", method = RequestMethod.GET)
 	public List<KategorijaBezSlikeDto> vratiSveKategorijeBezSlike (@PathVariable Integer kategorijaId){
 		
 		//List<KategorijaSaArtiklimaDto> lista = kategorijaService.vratiSve();
@@ -89,7 +90,7 @@ public class KategorijaController {
 		return list;
 	}
 	 
-	@RequestMapping(path="/kategorija/vratiSveKategorijeBezSlike", method = RequestMethod.GET)
+	@RequestMapping(path="/vratiSveKategorijeBezSlike", method = RequestMethod.GET)
 	public List<KategorijaBezSlikeDto> vratiSveKategorijeBezSlike (){
 		
 		List<Kategorija> lista = kategorijaService.vratiSve();
@@ -102,7 +103,7 @@ public class KategorijaController {
 	}
 	
 	
-	@RequestMapping(path = "/kategorija/dodajKategoriju", method = RequestMethod.POST)
+	@RequestMapping(path = "/dodajKategoriju", method = RequestMethod.POST)
 	public Kategorija dodajKategoriju (@RequestBody NovaKategorijaDto novaKategorija) {
 		System.out.println("Cuvanje nova kategorija");
 		System.out.println(novaKategorija);
@@ -116,7 +117,7 @@ public class KategorijaController {
 	}
 	
 	
-	@RequestMapping(path = "/kategorija/{katId}/sacuvajSliku", method = RequestMethod.POST)
+	@RequestMapping(path = "/{katId}/sacuvajSliku", method = RequestMethod.POST)
 	public ServerResponse sacuvajSlikuKategorije(@PathVariable Integer katId, @RequestParam("imageFile") MultipartFile file) {
 		Slika img;
 		ServerResponse r = new ServerResponse();
@@ -156,7 +157,7 @@ public class KategorijaController {
 		
 		return r;
 	}
-	@RequestMapping(path = "/kategorija/osnovno", method = RequestMethod.GET)
+	@RequestMapping(path = "/osnovno", method = RequestMethod.GET)
 	public ServerResponse vratiOsnovnoOKategorijama() {
 		ServerResponse sr = new ServerResponse();
 		sr.setPoruka("Uspesno");
